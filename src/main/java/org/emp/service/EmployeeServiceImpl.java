@@ -1,6 +1,7 @@
 package org.emp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.emp.dto.Employee;
 import org.emp.entity.EmployeeEntity;
@@ -29,9 +30,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> retrieve() {
         List<EmployeeEntity> all = employeeRepository.findAll();
         for (EmployeeEntity employeeEntity : all) {
-            Employee employee = mapper.convertValue(employeeEntity, Employee.class);
-            employeeList.add(employee);
+//            Employee employee = mapper.convertValue(employeeEntity, Employee.class);
+//            employeeList.add(employee);
+            employeeList.add(mapper.convertValue(employeeEntity,Employee.class));
         }
         return employeeList;
     }
+
+    @Override
+    public void deleteEmployeeById(Long id) {
+        employeeRepository.deleteById(id);
+    }
+
 }
