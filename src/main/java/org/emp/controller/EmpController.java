@@ -1,24 +1,28 @@
 package org.emp.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.emp.dto.Employee;
+import org.emp.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/add-employee")
 public class EmpController {
 
-    List<Employee> empList = new ArrayList<>();
+    private final EmployeeService service;
+
     @PostMapping("/add")
-    public void addEmployee(@RequestBody Employee employee){
-        empList.add(employee);
+    public void addEmployee(@RequestBody Employee employee) {
+        service.addNewEmployee(employee);
     }
 
-    @GetMapping("/get")
-    public List<Employee> getAllEmployees(){
-        return empList;
+    @GetMapping("/get-all")
+    public List<Employee> getAllEmployees() {
+        return service.retrieve();
+
     }
 }
 
