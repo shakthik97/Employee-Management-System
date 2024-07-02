@@ -30,8 +30,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> retrieve() {
         List<EmployeeEntity> all = employeeRepository.findAll();
         for (EmployeeEntity employeeEntity : all) {
-//            Employee employee = mapper.convertValue(employeeEntity, Employee.class);
-//            employeeList.add(employee);
             employeeList.add(mapper.convertValue(employeeEntity,Employee.class));
         }
         return employeeList;
