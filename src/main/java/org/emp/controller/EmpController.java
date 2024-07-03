@@ -34,5 +34,13 @@ public class EmpController {
         service.deleteEmployeeById(id);
         return "the Employee has been Deleted";
     }
+
+
+    @PutMapping("/update-emp")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateEmployee(@RequestBody Employee employee){
+        service.updateTheEmployee(employee);
+        return "updated";
+    }
 }
 

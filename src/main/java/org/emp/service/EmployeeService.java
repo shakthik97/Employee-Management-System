@@ -10,4 +10,6 @@ public interface EmployeeService {
     List<Employee> retrieve();
 
     void deleteEmployeeById(Long id);
+
+    void updateTheEmployee(Employee employee);
 }
