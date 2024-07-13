@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.emp.dto.Employee;
 import org.emp.entity.EmployeeEntity;
+import org.emp.exceptions.EmployeeNotFoundException;
 import org.emp.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +54,29 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeRepository.save(mapper.convertValue(employee, EmployeeEntity.class));
         }
 
+    }
+
+    @Override
+    public Employee findEmployeeById(Long id) {
+        if(employeeRepository.findById(id).isPresent()){
+            Optional<EmployeeEntity> byId = employeeRepository.findById(id);
+            return mapper.convertValue(byId, Employee.class);
+        }
+        return new Employee();
+    }
+
+    @Override
+    public List<Employee> findEmployeeByFirstName(String firstName) {
+        List<Employee> employeeList = new ArrayList<>();
+        List<EmployeeEntity> employeeByFirstName = employeeRepository.findEmployeeByFirstName(firstName);
+        for (EmployeeEntity entity : employeeByFirstName) {
+            Employee employee = mapper.convertValue(entity, Employee.class);
+            employeeList.add(employee);
+        }
+        if (employeeList.isEmpty()){
+            throw new EmployeeNotFoundException("Employees are not found by this first name - "+ firstName);
+        }
+        return employeeList;
     }
 
 }

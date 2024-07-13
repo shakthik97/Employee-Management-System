@@ -6,8 +6,10 @@ import org.emp.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/employee")
@@ -42,5 +44,17 @@ public class EmpController {
         service.updateTheEmployee(employee);
         return "updated";
     }
+
+    @GetMapping("/find-by-id/{id}")
+    public Employee findById(@PathVariable Long id){
+        return service.findEmployeeById(id);
+    }
+
+    @GetMapping("/find-by-firstName/{firstName}")
+    public List<Employee> findByFirstName(@PathVariable String firstName){
+        return service.findEmployeeByFirstName(firstName);
+    }
+
 }
 
+ 
