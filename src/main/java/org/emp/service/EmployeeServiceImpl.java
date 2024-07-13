@@ -33,11 +33,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (EmployeeEntity employeeEntity : all) {
             employeeList.add(mapper.convertValue(employeeEntity,Employee.class));
         }
+        if(employeeList.isEmpty()){
+            throw new EmployeeNotFoundException("No records available");
+        }
         return employeeList;
     }
 
     @Override
     public void deleteEmployeeById(Long id) {
+
+        if(!employeeRepository.existsById(id)){
+            throw new EmployeeNotFoundException("no emplyee found by this id");
+        }
         employeeRepository.deleteById(id);
     }
 
@@ -62,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             Optional<EmployeeEntity> byId = employeeRepository.findById(id);
             return mapper.convertValue(byId, Employee.class);
         }
-        return new Employee();
+        throw new EmployeeNotFoundException("No Employee found by this ID : ".concat(String.valueOf(id)));
     }
 
     @Override
@@ -74,7 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeList.add(employee);
         }
         if (employeeList.isEmpty()){
-            throw new EmployeeNotFoundException("Employees are not found by this first name - "+ firstName);
+            throw new EmployeeNotFoundException("Employees are not found by this first name : ".concat( firstName));
         }
         return employeeList;
     }
